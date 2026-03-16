@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SOL Tap</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="user-avatar" id="user-avatar">P</div>
+      <div>
+        <div class="user-name" id="user-name">Player</div>
+        <div class="user-level" id="header-level">Level 1</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="streak-badge">
+        <span>&#x1F525;</span>
+        <span id="streak-count">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Game Tab -->
+    <div id="tab-game" class="tab-content game-tab active">
+
+      <!-- Points -->
+      <div class="points-display">
+        <div class="points-label">SOL Points</div>
+        <div class="points-value" id="points-value">0</div>
+        <div class="points-per-tap"><span id="per-tap">+1 per tap</span></div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">&#x1F4CA;</div>
+          <div class="stat-val" id="stat-level">1</div>
+          <div class="stat-label">Level</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#x1F446;</div>
+          <div class="stat-val" id="stat-taps">0</div>
+          <div class="stat-label">Taps</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#x26A1;</div>
+          <div class="stat-val" id="stat-mult">1x</div>
+          <div class="stat-label">Multi</div>
+        </div>
+      </div>
+
+      <!-- Combo -->
+      <div class="combo-display" id="combo-display"></div>
+
+      <!-- Tap Button -->
+      <div class="tap-area">
+        <button class="tap-button" id="tap-button">
+          <span class="tap-icon">&#x25CE;</span>
+          <span class="tap-text">TAP</span>
+        </button>
+      </div>
+
+      <!-- Active Boosts -->
+      <div class="active-boosts" id="active-boosts"></div>
+
+      <!-- Energy Bar -->
+      <div class="energy-section">
+        <div class="energy-header">
+          <span class="energy-label">&#x26A1; Energy</span>
+          <span class="energy-value" id="energy-value">100/100</span>
+        </div>
+        <div class="energy-bar-bg">
+          <div class="energy-bar-fill" id="energy-fill" style="width: 100%"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Shop Tab -->
+    <div id="tab-shop" class="tab-content shop-tab">
+      <div class="shop-header">
+        <h2>&#x2B50; Boost Shop</h2>
+        <p>Spend Telegram Stars for powerful boosts</p>
+      </div>
+      <div class="shop-grid" id="shop-grid"></div>
+    </div>
+
+    <!-- Leaderboard Tab -->
+    <div id="tab-leaderboard" class="tab-content leaderboard-tab">
+      <div class="lb-header">
+        <h2>&#x1F3C6; Leaderboard</h2>
+        <p>Top SOL Tap players</p>
+      </div>
+      <div class="lb-your-rank">
+        <div>
+          <div class="lb-rank-label">Your Rank</div>
+          <div class="lb-rank-val" id="lb-rank-val">#--</div>
+        </div>
+        <div class="lb-rank-points" id="lb-rank-pts">0 pts</div>
+      </div>
+      <div class="lb-list" id="lb-list"></div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" data-tab="game">
+      <span class="nav-icon">&#x1F3AE;</span>
+      <span>Game</span>
+    </button>
+    <button class="nav-btn" data-tab="shop">
+      <span class="nav-icon">&#x1F6D2;</span>
+      <span>Shop</span>
+    </button>
+    <button class="nav-btn" data-tab="leaderboard">
+      <span class="nav-icon">&#x1F3C6;</span>
+      <span>Ranks</span>
+    </button>
+  </div>
+
+  <!-- Daily Bonus Modal -->
+  <div class="modal-overlay" id="daily-modal">
+    <div class="modal">
+      <h2>&#x1F381; Daily Bonus!</h2>
+      <p id="modal-streak">1 day streak!</p>
+      <div class="bonus-amount" id="modal-bonus">+50 points</div>
+      <button class="modal-btn" id="modal-claim-btn">Claim</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
