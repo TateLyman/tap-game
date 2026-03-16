@@ -8,7 +8,7 @@
  *   node bot-setup.js
  *
  * Prerequisites:
- *   npm install node-fetch@2
+ *   Node.js 18+ (uses native fetch)
  *
  * After running this script, you need to host the Mini App files
  * (index.html, game.js, style.css) on HTTPS. Options:
@@ -34,8 +34,6 @@ const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const MINI_APP_URL = 'https://tatelyman.github.io/tap-game/';
 
 async function setup() {
-  const fetch = (await import('node-fetch')).default;
-
   console.log('Setting up SOL Tap Mini App...\n');
 
   // 1. Set the menu button to open the Mini App
