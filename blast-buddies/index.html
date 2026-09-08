@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="theme-color" content="#0b0d16" />
+<title>Blast Buddies — Multiplayer Chaos</title>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <section id="homeScreen" class="screen active">
+    <div class="hero">
+      <div class="logo">BLAST <span>BUDDIES</span></div>
+      <div class="tag">Tiny arena. Huge knockouts. Grab absurd weapons, dodge meteors, dash through trouble, and bully your friends off the scoreboard.</div>
+    </div>
+    <div class="menu">
+      <div class="card">
+        <div class="row">
+          <div class="grow"><label for="nameInput">Your name</label><input id="nameInput" maxlength="16" autocomplete="nickname" value="Player" /></div>
+          <button id="soloBtn" class="btn warn">SOLO CHAOS</button>
+        </div>
+        <div class="small" style="margin-top:9px">Solo Chaos drops you in with 4 bots instantly. Same game, no internet room required.</div>
+      </div>
+      <div class="card">
+        <label>Create a room</label>
+        <button id="hostBtn" class="btn primary" style="width:100%">CREATE ROOM</button>
+        <div class="small center" style="margin-top:9px">You host the match. Friends join with your 5-letter code.</div>
+      </div>
+      <div class="card">
+        <label for="roomInput">Join a friend</label>
+        <div class="row"><div class="grow"><input id="roomInput" maxlength="5" placeholder="ABCDE" style="text-transform:uppercase;letter-spacing:.16em" /></div><button id="joinBtn" class="btn hot">JOIN</button></div>
+        <div id="homeStatus" class="status"></div>
+      </div>
+    </div>
+    <div class="features"><span class="pill">⚡ 90 sec rounds</span><span class="pill">🚀 rockets</span><span class="pill">💥 meteors</span><span class="pill">🛡 shields</span><span class="pill">🤖 bots</span><span class="pill">🌐 peer-to-peer multiplayer</span></div>
+  </section>
+
+  <section id="lobbyScreen" class="screen">
+    <div class="topbar">
+      <div class="roomBadge">ROOM <b id="roomCodeText">-----</b></div>
+      <div class="row"><button id="copyBtn" class="btn ghost">COPY INVITE</button><button id="leaveLobbyBtn" class="btn ghost">LEAVE</button></div>
+    </div>
+    <div class="lobbyGrid">
+      <div class="card">
+        <label>Players</label><div id="lobbyPlayers" class="players"></div>
+        <div id="hostControls" class="lobbyActions"><button id="addBotBtn" class="btn warn">+ ADD BOT</button><button id="startBtn" class="btn primary">START MAYHEM</button></div>
+        <div id="lobbyStatus" class="status"></div>
+      </div>
+      <div class="card howto">
+        <label>Controls</label>
+        <div class="keyline"><span class="keys"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span></span><span>Move</span></div>
+        <div class="keyline"><span class="keys"><span class="key">MOUSE</span></span><span>Aim</span></div>
+        <div class="keyline"><span class="keys"><span class="key">CLICK</span></span><span>Shoot</span></div>
+        <div class="keyline"><span class="keys"><span class="key">SHIFT</span></span><span>Dash</span></div>
+        <div class="small">On phones: use the on-screen movement, FIRE and DASH buttons. FIRE auto-aims at the nearest enemy.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gameScreen" class="screen">
+    <div class="gameShell" id="gameShell">
+      <canvas id="gameCanvas" width="1200" height="720"></canvas>
+      <div class="hud">
+        <div class="hudTop"><div class="hudBox"><span id="weaponText" class="weapon">BLASTER</span></div><div id="timerText" class="hudBox timer">1:30</div><div id="roomHud" class="hudBox">ROOM -----</div></div>
+        <div id="killfeed"></div><div id="scoreboard"></div><div id="centerMsg"></div>
+        <div class="bottomHud"><div class="healthWrap"><div class="barLabel"><span>HP</span><span id="hpNum">100</span></div><div class="bar"><i id="hpBar"></i></div><div id="shieldWrap" style="display:none;margin-top:5px"><div class="barLabel"><span>SHIELD</span><span id="shieldNum">0</span></div><div class="bar shieldbar"><i id="shieldBar"></i></div></div></div><div id="dashPip" class="dashPip ready">DASH READY</div></div>
+        <div class="gameButtons"><button id="muteBtn" class="miniBtn">SOUND ON</button><button id="leaveGameBtn" class="miniBtn">LEAVE</button></div>
+        <div class="mobileControls"><div class="dpad"><button class="touchBtn" data-key="up">▲</button><button class="touchBtn" data-key="left">◀</button><button class="touchBtn" data-key="down">▼</button><button class="touchBtn" data-key="right">▶</button></div><div class="actionsTouch"><button id="touchDash" class="touchBtn actionBig dash">DASH</button><button id="touchFire" class="touchBtn actionBig fire">FIRE</button></div></div>
+      </div>
+      <div id="endOverlay"><div class="endCard"><div class="endTitle">ROUND OVER</div><div id="endWinner" class="endWinner">Winner!</div><button id="rematchBtn" class="btn primary">REMATCH</button></div></div>
+    </div>
+  </section>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="core.js"></script>
+<script src="sim.js"></script>
+<script src="render.js"></script>
+<script src="input.js"></script>
+</body>
+</html>
