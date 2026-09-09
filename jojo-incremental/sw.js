@@ -1,0 +1,5 @@
+const CACHE='bizarre-legacy-v3';
+const CORE=['./','index.html','style.css','style-base.css','style-combat.css','style-drawers.css','style-mobile.css','manifest.webmanifest','js/data-core.js','js/data-extra.js','js/save.js','js/game-core.js','js/game-combat.js','js/game-progression.js','js/game-meta.js','js/game-loop.js','js/ui-core.js','js/ui-roster.js','js/ui-systems.js','js/ui-prestige.js','js/ui-init.js','assets/hero.webp','assets/poster.webp','assets/characters.webp','assets/stands.webp','assets/items.webp','assets/ui-kit.webp'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r;}).catch(()=>caches.match(e.request).then(r=>r||caches.match('./'))));});

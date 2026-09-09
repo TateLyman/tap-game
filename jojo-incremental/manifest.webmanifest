@@ -1,0 +1,10 @@
+{
+  "name":"Bizarre Legacy",
+  "short_name":"Bizarre Legacy",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#09070d",
+  "theme_color":"#100d19",
+  "description":"A fan-made incremental RPG with active combat, idle progression, characters, Stands and prestige systems."
+}
