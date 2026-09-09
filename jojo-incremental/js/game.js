@@ -109,7 +109,7 @@ BZ.defeatEnemy=function(){
  if(s.equippedItem==='locacaca'&&s.stats.kills%12===0){s.yen+=yen;BZ.feed('Locacaca caused an <b>Equivalent Exchange</b>: double reward.','rare')}
  s.wave++;
  if(boss&&s.wave>30){BZ.completePart();return}
- BZ.checkLevel();BZ.checkAchievements();BZ.maybeFateEvent();BZ.spawnEnemy();
+ BZ.checkLevel();BZ.checkAchievements();BZ.spawnEnemy();BZ.maybeFateEvent();
 };
 
 BZ.checkLevel=function(){const s=BZ.state;let need=40*Math.pow(1.18,s.level-1);while(s.xp>=need){s.xp-=need;s.level++;need=40*Math.pow(1.18,s.level-1);if(s.level===5){s.autoUnlocked=true;BZ.UI?.toast('AUTOMATION UNLOCKED','Auto Attack can now be enabled.')}if(s.level%5===0)BZ.feed(`Reached <b>Level ${s.level}</b>.`,'good')}};
@@ -147,6 +147,7 @@ BZ.equipItem=function(id){if(!BZ.state.items.includes(id))return;BZ.state.equipp
 
 BZ.completePart=function(){
  const s=BZ.state,p=BZ.getPart();if(!s.completedParts.includes(p.id))s.completedParts.push(p.id);
+ BZ.CHARACTERS.filter(c=>c.part===p.id).forEach(c=>{if(!s.unlockedCharacters.includes(c.id)){s.unlockedCharacters.push(c.id);s.characterLevels[c.id]=1}});
  if(p.id<9){s.unlockedPart=Math.max(s.unlockedPart,p.id+1);BZ.unlockPartCharacters(p.id+1);s.part=p.id+1;s.wave=1;BZ.progressQuest('part',s.unlockedPart,true);BZ.UI?.reveal('NEW PART UNLOCKED',BZ.getPart().name,`${BZ.getPart().mechanic} now enters the buildcraft.`);BZ.spawnEnemy();}
  else{BZ.UI?.reveal('MULTIVERSE UNLOCKED','All Parts Cleared','Dimension Shards can now appear from boss kills.');s.wave=1;BZ.spawnEnemy()}
 };
