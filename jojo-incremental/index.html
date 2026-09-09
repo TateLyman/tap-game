@@ -3,21 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#100d19" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Bizarre Legacy" />
-  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="manifest" href="manifest.webmanifest?v=20260909d" />
+  <script>
+    if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});}
+    if('caches' in window){caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))).catch(()=>{});}
+  </script>
+  <meta name="theme-color" content="#100d19" />
   <title>Bizarre Legacy — Incremental JoJo Fan Game</title>
   <meta name="description" content="A content-heavy browser incremental RPG inspired by JoJo's Bizarre Adventure." />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20260909e" />
+  <link rel="stylesheet" href="style-hotfix.css?v=20260909e" />
 </head>
 <body>
   <div id="app" class="part-1">
     <header class="topbar">
-      <div class="brand-wrap"><div class="brand-art"></div><div class="brand-text"><strong>BIZARRE LEGACY</strong><small>FAN-MADE INCREMENTAL RPG</small></div></div>
+      <div class="brand-wrap">
+        <div class="brand-art"></div>
+        <div class="brand-text">
+          <strong>BIZARRE LEGACY</strong>
+          <small>FAN-MADE INCREMENTAL RPG</small>
+        </div>
+      </div>
       <div id="currencies" class="currencies"></div>
-      <div class="top-actions"><button class="icon-btn" id="audioBtn" title="Toggle sound">♪</button><button class="icon-btn" id="saveBtn" title="Save now">💾</button></div>
+      <div class="top-actions">
+        <button class="icon-btn generated-icon-btn" id="audioBtn" title="Toggle sound" aria-label="Toggle sound"><span class="gen-icon audio-icon"></span></button>
+        <button class="icon-btn generated-icon-btn" id="saveBtn" title="Save now" aria-label="Save now"><span class="gen-icon save-icon"></span></button>
+      </div>
     </header>
 
     <div class="shell">
@@ -25,47 +39,140 @@
         <div class="panel-title"><span>PARTY</span><b id="teamPower">0 PWR</b></div>
         <div id="partyList" class="party-list"></div>
         <button class="wide-btn ghost" data-tab="characters">Manage Team</button>
-        <div class="mini-card stand-card-block"><div class="mini-label">ACTIVE STAND</div><div id="activeStandMini"></div></div>
-        <div class="mini-card"><div class="mini-label">PLAYER RESOLVE</div><div class="meter big"><i id="resolveFill"></i></div><div class="mini-row"><span id="resolveText">100 / 100</span><span id="playerTitle">Ripple Rookie</span></div></div>
-        <div class="mini-card"><div class="mini-label">FATE</div><div class="meter"><i id="fateFill"></i></div><div class="mini-row"><span id="fateText">0 / 100</span><span id="fateLuck">Luck ×1.00</span></div></div>
-        <div class="mini-card"><div class="mini-label">AUTOMATION</div><div id="automationPreview" class="automation-preview"></div></div>
+
+        <div class="mini-card stand-card-block">
+          <div class="mini-label">ACTIVE STAND</div>
+          <div id="activeStandMini"></div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-label">PLAYER RESOLVE</div>
+          <div class="meter big"><i id="resolveFill"></i></div>
+          <div class="mini-row"><span id="resolveText">100 / 100</span><span id="playerTitle">Ripple Rookie</span></div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-label">FATE</div>
+          <div class="meter"><i id="fateFill"></i></div>
+          <div class="mini-row"><span id="fateText">0 / 100</span><span id="fateLuck">Luck ×1.00</span></div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-label">AUTOMATION</div>
+          <div id="automationPreview" class="automation-preview"></div>
+        </div>
       </aside>
 
       <main class="combat-stage">
-        <div class="stage-backdrop"><div id="partArt" class="part-art"></div><div class="stage-overlay"></div></div>
-        <div class="stage-header"><div><span class="eyebrow" id="partEyebrow">PART 1</span><h1 id="locationName">Windknight's Lot</h1><p id="partSummary" class="part-summary">Hamon begins your strange journey.</p></div><div class="wave-box"><span>ENCOUNTER</span><b id="waveText">1 / 30</b></div></div>
-        <div class="combat-card panel" id="combatCard">
-          <div class="manga-lines"></div><div id="bossRibbon" class="boss-ribbon hidden">BOSS ENCOUNTER</div>
-          <div class="combat-layout">
-            <div class="enemy-visual-wrap"><div id="enemyArt" class="enemy-art"></div><button id="enemyButton" class="enemy-button" aria-label="Attack enemy"><div class="enemy-aura"></div><div id="enemyGlyph" class="enemy-glyph">☠</div><div class="enemy-shadow"></div></button></div>
-            <div class="enemy-info"><div class="enemy-tag" id="enemyTag">VAMPIRE</div><h2 id="enemyName">Vampire</h2><div class="hp-row"><span>HP</span><b id="hpText">100 / 100</b></div><div class="hp-bar"><i id="hpFill"></i><em id="shieldFill"></em></div><div class="hp-row"><span>ENEMY ACTION</span><b id="enemyActionText">Ready</b></div><div class="enemy-action"><i id="enemyActionFill"></i></div><div id="statusRow" class="status-row"></div></div>
-          </div>
-          <div id="damageLayer" class="damage-layer"></div><div id="comboBadge" class="combo-badge">COMBO ×1.00</div>
+        <div class="stage-backdrop">
+          <div id="partArt" class="part-art"></div>
+          <div class="stage-overlay"></div>
         </div>
+
+        <div class="stage-header">
+          <div>
+            <span class="eyebrow" id="partEyebrow">PART 1</span>
+            <h1 id="locationName">Windknight's Lot</h1>
+            <p id="partSummary" class="part-summary">Hamon begins your strange journey.</p>
+          </div>
+          <div class="wave-box"><span>ENCOUNTER</span><b id="waveText">1 / 30</b></div>
+        </div>
+
+        <div class="combat-card panel" id="combatCard">
+          <div class="manga-lines"></div>
+          <div id="bossRibbon" class="boss-ribbon hidden">BOSS ENCOUNTER</div>
+          <div class="combat-layout">
+            <div class="enemy-visual-wrap">
+              <div id="enemyArt" class="enemy-art"></div>
+              <button id="enemyButton" class="enemy-button" aria-label="Attack enemy">
+                <div class="enemy-aura"></div>
+                <div id="enemyGlyph" class="enemy-glyph"></div>
+                <div class="enemy-shadow"></div>
+              </button>
+            </div>
+            <div class="enemy-info">
+              <div class="enemy-tag" id="enemyTag">VAMPIRE</div>
+              <h2 id="enemyName">Vampire</h2>
+              <div class="hp-row"><span>HP</span><b id="hpText">100 / 100</b></div>
+              <div class="hp-bar"><i id="hpFill"></i><em id="shieldFill"></em></div>
+              <div class="hp-row"><span>ENEMY ACTION</span><b id="enemyActionText">Ready</b></div>
+              <div class="enemy-action"><i id="enemyActionFill"></i></div>
+              <div id="statusRow" class="status-row"></div>
+            </div>
+          </div>
+          <div id="damageLayer" class="damage-layer"></div>
+          <div id="comboBadge" class="combo-badge">COMBO ×1.00</div>
+        </div>
+
         <div id="abilityRow" class="ability-row"></div>
         <div class="combat-footer">
-          <button id="autoToggle" class="toggle-btn"><span>⚙</span><div><b>AUTO ATTACK</b><small id="autoState">Locked</small></div></button>
-          <button id="abilityAutoToggle" class="toggle-btn"><span>✦</span><div><b>AUTO ABILITIES</b><small id="autoAbilityState">Locked</small></div></button>
-          <button id="bossRushBtn" class="toggle-btn"><span>♛</span><div><b>BOSS PUSH</b><small id="bossState">Advance when ready</small></div></button>
-          <button id="arrowBtn" class="toggle-btn"><span>➶</span><div><b>STAND ARROW</b><small id="arrowCount">0 available</small></div></button>
+          <button id="autoToggle" class="toggle-btn"><span class="gen-action auto-attack-icon"></span><div><b>AUTO ATTACK</b><small id="autoState">Locked</small></div></button>
+          <button id="abilityAutoToggle" class="toggle-btn"><span class="gen-action auto-ability-icon"></span><div><b>AUTO ABILITIES</b><small id="autoAbilityState">Locked</small></div></button>
+          <button id="bossRushBtn" class="toggle-btn"><span class="gen-action boss-icon"></span><div><b>BOSS PUSH</b><small id="bossState">Advance when ready</small></div></button>
+          <button id="arrowBtn" class="toggle-btn"><span class="gen-action arrow-icon"></span><div><b>STAND ARROW</b><small id="arrowCount">0 available</small></div></button>
         </div>
       </main>
 
-      <aside class="right-panel panel"><div class="panel-title"><span>SHOP</span><b>UPGRADES</b></div><div id="quickUpgrades" class="upgrade-list"></div><button class="wide-btn ghost" data-tab="upgrades">Open Full Upgrade Tree</button><div class="panel-title secondary"><span>LIVE FEED</span><b>EVENTS</b></div><div id="eventFeed" class="event-feed"></div></aside>
+      <aside class="right-panel panel">
+        <div class="panel-title"><span>SHOP</span><b>UPGRADES</b></div>
+        <div id="quickUpgrades" class="upgrade-list"></div>
+        <button class="wide-btn ghost" data-tab="upgrades">Open Full Upgrade Tree</button>
+
+        <div class="panel-title secondary"><span>LIVE FEED</span><b>EVENTS</b></div>
+        <div id="eventFeed" class="event-feed"></div>
+      </aside>
     </div>
 
     <nav class="bottom-nav" id="bottomNav">
-      <button class="nav-item active" data-tab="fight">⚔<span>Fight</span></button><button class="nav-item" data-tab="characters">👥<span>Characters</span></button><button class="nav-item" data-tab="stands">✦<span>Stands</span></button><button class="nav-item" data-tab="upgrades">⬆<span>Upgrades</span></button><button class="nav-item" data-tab="items">◆<span>Items</span></button><button class="nav-item" data-tab="quests">✓<span>Quests</span></button><button class="nav-item" data-tab="parts">◈<span>Parts</span></button><button class="nav-item" data-tab="prestige">∞<span>Prestige</span></button><button class="nav-item" data-tab="achievements">★<span>Achievements</span></button><button class="nav-item" data-tab="settings">⚙<span>Settings</span></button>
+      <button class="nav-item active" data-tab="fight"><span>Fight</span></button>
+      <button class="nav-item" data-tab="characters"><span>Characters</span></button>
+      <button class="nav-item" data-tab="stands"><span>Stands</span></button>
+      <button class="nav-item" data-tab="upgrades"><span>Upgrades</span></button>
+      <button class="nav-item" data-tab="items"><span>Items</span></button>
+      <button class="nav-item" data-tab="quests"><span>Quests</span></button>
+      <button class="nav-item" data-tab="parts"><span>Parts</span></button>
+      <button class="nav-item" data-tab="prestige"><span>Prestige</span></button>
+      <button class="nav-item" data-tab="achievements"><span>Achievements</span></button>
+      <button class="nav-item" data-tab="settings"><span>Settings</span></button>
     </nav>
 
-    <section id="drawer" class="drawer hidden"><div class="drawer-head"><div><span class="eyebrow" id="drawerEyebrow">SYSTEM</span><h2 id="drawerTitle">Characters</h2></div><button id="drawerClose" class="icon-btn">×</button></div><div id="drawerBody" class="drawer-body"></div></section>
+    <section id="drawer" class="drawer hidden">
+      <div class="drawer-head">
+        <div>
+          <span class="eyebrow" id="drawerEyebrow">SYSTEM</span>
+          <h2 id="drawerTitle">Characters</h2>
+        </div>
+        <button id="drawerClose" class="icon-btn">×</button>
+      </div>
+      <div id="drawerBody" class="drawer-body"></div>
+    </section>
   </div>
 
   <div id="toastStack" class="toast-stack"></div>
-  <div id="offlineModal" class="modal hidden"><div class="modal-card"><span class="eyebrow">WHILE YOU WERE AWAY</span><h2>Fate kept moving.</h2><div id="offlineStats" class="offline-grid"></div><button id="offlineClaim" class="wide-btn">Claim Rewards</button></div></div>
-  <div id="revealModal" class="modal hidden"><div class="modal-card reveal-card"><div id="revealBurst" class="reveal-burst">✦</div><span class="eyebrow" id="revealType">STAND AWAKENED</span><h2 id="revealName">Star Platinum</h2><p id="revealDesc"></p><button id="revealClose" class="wide-btn">Continue</button></div></div>
 
-  <script src="js/data-core.js"></script><script src="js/data-extra.js"></script><script src="js/save.js"></script><script src="js/game-core.js"></script><script src="js/game-combat.js"></script><script src="js/game-progression.js"></script><script src="js/game-meta.js"></script><script src="js/game-loop.js"></script><script src="js/ui-core.js"></script><script src="js/ui-roster.js"></script><script src="js/ui-systems.js"></script><script src="js/ui-prestige.js"></script><script src="js/ui-init.js"></script>
-  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script>
+  <div id="offlineModal" class="modal hidden">
+    <div class="modal-card">
+      <span class="eyebrow">WHILE YOU WERE AWAY</span>
+      <h2>Fate kept moving.</h2>
+      <div id="offlineStats" class="offline-grid"></div>
+      <button id="offlineClaim" class="wide-btn">Claim Rewards</button>
+    </div>
+  </div>
+
+  <div id="revealModal" class="modal hidden">
+    <div class="modal-card reveal-card">
+      <div id="revealBurst" class="reveal-burst"></div>
+      <span class="eyebrow" id="revealType">STAND AWAKENED</span>
+      <h2 id="revealName">Star Platinum</h2>
+      <p id="revealDesc"></p>
+      <button id="revealClose" class="wide-btn">Continue</button>
+    </div>
+  </div>
+
+  <script src="js/data.js?v=20260909e"></script>
+  <script src="js/save.js?v=20260909e"></script>
+  <script src="js/game.js?v=20260909e"></script>
+  <script src="js/bootfix.js?v=20260909e"></script>
+  <script src="js/ui.js?v=20260909e"></script>
 </body>
 </html>
