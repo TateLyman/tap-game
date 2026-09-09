@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#100d19" />
+  <title>Bizarre Legacy — JoJo Incremental Fan Game</title>
+  <meta name="description" content="A free browser incremental RPG fan game inspired by JoJo's Bizarre Adventure." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="part-1">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">★</div>
+        <div><strong>BIZARRE LEGACY</strong><small>FAN-MADE INCREMENTAL RPG</small></div>
+      </div>
+      <div class="currencies" id="currencies"></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="audioBtn" title="Toggle audio">♪</button>
+        <button class="icon-btn" id="saveBtn" title="Save now">⬇</button>
+      </div>
+    </header>
+
+    <div class="shell">
+      <aside class="left-panel panel">
+        <div class="panel-title"><span>PARTY</span><b id="teamPower">0 PWR</b></div>
+        <div id="partyList" class="party-list"></div>
+        <button class="wide-btn ghost" data-tab="characters">Manage Team</button>
+        <div class="mini-card">
+          <div class="mini-label">ACTIVE STAND</div>
+          <div id="activeStandMini"></div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-label">FATE</div>
+          <div class="meter"><i id="fateFill"></i></div>
+          <div class="mini-row"><span id="fateText">0 / 100</span><span id="fateLuck">Luck ×1.00</span></div>
+        </div>
+      </aside>
+
+      <main class="combat-stage">
+        <div class="stage-header">
+          <div>
+            <span class="eyebrow" id="partEyebrow">PART 1</span>
+            <h1 id="locationName">Windknight's Lot</h1>
+          </div>
+          <div class="wave-box"><span>ENCOUNTER</span><b id="waveText">1 / 10</b></div>
+        </div>
+
+        <div class="combat-card" id="combatCard">
+          <div class="manga-lines"></div>
+          <div id="bossRibbon" class="boss-ribbon hidden">BOSS ENCOUNTER</div>
+          <div class="enemy-tag" id="enemyTag">VAMPIRE</div>
+          <button id="enemyButton" class="enemy-button" aria-label="Attack enemy">
+            <div class="enemy-aura"></div>
+            <div id="enemyGlyph" class="enemy-glyph">☠</div>
+            <div class="enemy-shadow"></div>
+          </button>
+          <div class="enemy-info">
+            <h2 id="enemyName">Vampire</h2>
+            <div class="hp-row"><span>HP</span><b id="hpText">100 / 100</b></div>
+            <div class="hp-bar"><i id="hpFill"></i><em id="shieldFill"></em></div>
+            <div id="statusRow" class="status-row"></div>
+          </div>
+          <div id="damageLayer" class="damage-layer"></div>
+          <div id="comboBadge" class="combo-badge">COMBO ×1.00</div>
+        </div>
+
+        <div class="ability-row" id="abilityRow"></div>
+        <div class="combat-footer">
+          <button id="autoToggle" class="toggle-btn"><span>⚙</span><div><b>AUTO ATTACK</b><small id="autoState">Locked</small></div></button>
+          <button id="bossRushBtn" class="toggle-btn"><span>♛</span><div><b>BOSS PUSH</b><small>Advance when ready</small></div></button>
+          <button id="arrowBtn" class="toggle-btn"><span>➶</span><div><b>STAND ARROW</b><small id="arrowCount">0 available</small></div></button>
+        </div>
+      </main>
+
+      <aside class="right-panel panel">
+        <div class="panel-title"><span>QUICK UPGRADES</span><b>BUY</b></div>
+        <div id="quickUpgrades" class="upgrade-list"></div>
+        <div class="panel-title secondary"><span>LIVE FEED</span></div>
+        <div id="eventFeed" class="event-feed"></div>
+      </aside>
+    </div>
+
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-tab="fight">⚔<span>Fight</span></button>
+      <button class="nav-item" data-tab="characters">♟<span>Characters</span></button>
+      <button class="nav-item" data-tab="stands">✦<span>Stands</span></button>
+      <button class="nav-item" data-tab="parts">◈<span>Parts</span></button>
+      <button class="nav-item" data-tab="quests">✓<span>Quests</span></button>
+      <button class="nav-item" data-tab="prestige">∞<span>Prestige</span></button>
+      <button class="nav-item" data-tab="collection">◆<span>Collection</span></button>
+      <button class="nav-item" data-tab="settings">⚙<span>Settings</span></button>
+    </nav>
+
+    <section id="drawer" class="drawer hidden">
+      <div class="drawer-head"><div><span class="eyebrow" id="drawerEyebrow">SYSTEM</span><h2 id="drawerTitle">Characters</h2></div><button id="drawerClose" class="icon-btn">×</button></div>
+      <div id="drawerBody" class="drawer-body"></div>
+    </section>
+  </div>
+
+  <div id="toastStack" class="toast-stack"></div>
+
+  <div id="offlineModal" class="modal hidden">
+    <div class="modal-card">
+      <span class="eyebrow">WHILE YOU WERE AWAY</span>
+      <h2>Fate kept moving.</h2>
+      <div id="offlineStats" class="offline-grid"></div>
+      <button id="offlineClaim" class="wide-btn">Claim Rewards</button>
+    </div>
+  </div>
+
+  <div id="revealModal" class="modal hidden">
+    <div class="modal-card reveal-card">
+      <div id="revealBurst" class="reveal-burst">✦</div>
+      <span class="eyebrow" id="revealType">STAND AWAKENED</span>
+      <h2 id="revealName">Star Platinum</h2>
+      <p id="revealDesc"></p>
+      <button id="revealClose" class="wide-btn">Continue</button>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/save.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
